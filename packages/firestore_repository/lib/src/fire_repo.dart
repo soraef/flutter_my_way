@@ -47,8 +47,8 @@ mixin FireRepoGetStream<Id extends FireRepoId, T> implements FireRepo<Id, T> {
 }
 
 mixin FireRepoList<Id extends FireRepoId, T> implements FireRepo<Id, T> {
-  Future<List<T>> list() async {
-    final snapshot = await config.collection().get();
+  Future<List<T>> list(CollectionPath collectionPath) async {
+    final snapshot = await config.collection(collectionPath).get();
     return snapshot.docs.map((e) => e.data()).whereType<T>().toList();
   }
 }
