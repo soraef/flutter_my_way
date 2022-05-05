@@ -29,7 +29,7 @@ class RepoConfig<Id extends FireRepoId, T> {
   ) {
     CollectionReference<dynamic>? _collection;
 
-    for (var i = 1; i <= collectionPath.collectionIds.length; i++) {
+    for (var i = 0; i < collectionPath.collectionIds.length; i++) {
       if (_collection == null) {
         _collection = FirebaseFirestore.instance
             .collection(collectionPath.collectionIds.getString(i));
