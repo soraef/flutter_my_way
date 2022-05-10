@@ -1,0 +1,21 @@
+name: fire_repo
+description: A new Flutter package project.
+version: 0.0.1
+# homepage:
+
+environment:
+  sdk: ">=2.16.2 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  firebase_core: ^1.13.1
+  cloud_firestore: ^3.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^1.0.0
+
+flutter:

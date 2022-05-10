@@ -1,19 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'repo_id.dart';
+import 'fire_collection.dart';
+import 'fire_repo_id.dart';
 
-class RepoConfig<Id extends FireRepoId, T> {
+class FireRepoConfig<T, Id extends FireRepoId<C>, C extends FireCollection> {
   final T Function(Map<String, dynamic>) fromJson;
   final Map<String, dynamic> Function(T) toJson;
   final Id Function(T) getId;
 
-  RepoConfig({
+  FireRepoConfig({
     required this.fromJson,
     required this.toJson,
     required this.getId,
   });
 
-  CollectionReference<T?> collection(CollectionPath collectionPath) {
+  CollectionReference<T?> collection(C collectionPath) {
     return collectionWithoutConverter(collectionPath).withConverter(
       fromFirestore: (snapshot, _) {
         final data = snapshot.data();
@@ -25,34 +26,34 @@ class RepoConfig<Id extends FireRepoId, T> {
   }
 
   CollectionReference<dynamic> collectionWithoutConverter(
-    CollectionPath collectionPath,
+    FireCollection collectionPath,
   ) {
     CollectionReference<dynamic>? _collection;
 
     for (var i = 0; i < collectionPath.collectionIds.length; i++) {
       if (_collection == null) {
         _collection = FirebaseFirestore.instance
-            .collection(collectionPath.collectionIds.getString(i));
+            .collection(collectionPath.collectionIds.values[i]);
       } else {
         _collection = _collection
-            .doc(collectionPath.documentIds.getString(i - 1))
-            .collection(collectionPath.collectionIds.getString(i));
+            .doc(collectionPath.documentIds.values[i - 1])
+            .collection(collectionPath.collectionIds.values[i]);
       }
     }
 
     return _collection!;
   }
 
-  DocumentReference<T?> doc(Id id) {
-    return collection(id.path).doc(id.docId);
+  DocumentReference<T?> doc(Id repoId) {
+    return collection(repoId.collection).doc(repoId.id);
   }
 
-  DocumentReference<dynamic> docWithoutConverter(Id id) {
-    return collectionWithoutConverter(id.path).doc(id.docId);
+  DocumentReference<dynamic> docWithoutConverter(Id repoId) {
+    return collectionWithoutConverter(repoId.collection).doc(repoId.id);
   }
 
   DocumentReference<T?> entityDoc(T entity) {
-    final id = getId(entity);
-    return collection(id.path).doc(id.docId);
+    final repoId = getId(entity);
+    return collection(repoId.collection).doc(repoId.id);
   }
 }

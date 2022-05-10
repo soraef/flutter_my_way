@@ -2,9 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-library firestore_repository;
+library fire_repo;
 
-export 'src/repo.dart';
-export 'src/repo_id.dart';
+export 'src/fire_collection.dart';
+export 'src/fire_repo_id.dart';
 export 'src/repo_config.dart';
 export 'src/fire_repo.dart';
+export 'src/fire_repo_mixin.dart';
