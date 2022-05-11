@@ -84,7 +84,7 @@ class UserReadRepo extends FireRepoWrite {
   FireRepoConfig<User, UserRepoId, UserCollection> get config => userRepoConfig;
 }
 
-class UserRepo extends FireRepoAll {
+class UserRepo extends FireRepoAll<User, UserRepoId, UserCollection> {
   @override
   FireRepoConfig<User, UserRepoId, UserCollection> get config => userRepoConfig;
 }
@@ -123,10 +123,11 @@ class TodoRepo extends FireRepoAll<Todo, TodoRepoId, TodoCollection> {
   Future<List<Todo>> cursor(
       TodoCollection collectionPath, TodoRepoId? id) async {
     return queryCursor(
-      collectionPath: collectionPath,
-      where: (q) => q,
-      limit: 1,
-      afterId: id,
+      FireQueryCoursorParams(
+        collection: collectionPath,
+        where: (q) => q,
+        afterId: id,
+      ),
     );
   }
 }
@@ -138,22 +139,26 @@ void main() {
 
     repo.store(user);
     repo.get(UserRepoId("userId"));
-    repo.list(UserCollection());
+    repo.list(
+      FireListParams(collection: UserCollection(), limit: 10),
+    );
     repo.delete(user);
 
     // query
     repo.query(
-      UserCollection(),
-      (collection) => collection.where("name", isEqualTo: "soraef"),
+      FireQueryParams(
+        collection: UserCollection(),
+        where: (collection) => collection.where("name", isEqualTo: "soraef"),
+      ),
     );
 
     // query cursor for infinity loading
     // get the entities of limit from the next of afterId.
     repo.queryCursor(
-      collectionPath: UserCollection(),
-      where: (collection) => collection.orderBy("createdAt"),
-      limit: 10,
-      afterId: null,
+      FireQueryCoursorParams(
+        collection: UserCollection(),
+        where: (collection) => collection.orderBy("createdAt").limit(10),
+      ),
     );
   });
 }

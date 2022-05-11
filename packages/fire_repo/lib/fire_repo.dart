@@ -6,6 +6,6 @@ library fire_repo;
 
 export 'src/fire_collection.dart';
 export 'src/fire_repo_id.dart';
-export 'src/repo_config.dart';
+export 'src/fire_repo_config.dart';
 export 'src/fire_repo.dart';
-export 'src/fire_repo_mixin.dart';
+export 'src/fire_repo_mixin/fire_repo_mixin.dart';

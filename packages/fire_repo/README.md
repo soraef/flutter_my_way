@@ -18,25 +18,29 @@ class UserRepo extends FireRepoAll {
 }
 
 void main() {
+  final user = User("userId", "soraef");
   final repo = UserRepo();
+
   repo.store(user);
   repo.get(UserRepoId("userId"));
-  repo.list(UserCollection());
+  repo.list(FireListParams(collection: UserCollection(), limit: 10));
   repo.delete(user);
 
   // query
   repo.query(
-    UserCollection(),
-    (collection) => collection.where("name", isEqualTo: "soraef"),
+    FireQueryParams(
+      collection: UserCollection(),
+      where: (collection) => collection.where("name", isEqualTo: "soraef"),
+    ),
   );
 
   // query cursor for infinity loading
   // get the entities of limit from the next of afterId.
   repo.queryCursor(
-    collectionPath: UserCollection(),
-    where: (collection) => collection.orderBy("createdAt"),
-    limit: 10,
-    afterId: null,
+    FireQueryCoursorParams(
+      collection: UserCollection(),
+      where: (collection) => collection.orderBy("createdAt").limit(10),
+    ),
   );
 }
 ```
@@ -121,7 +125,6 @@ class UserRepo extends FireRepoAll {
 }
 ```
 
-
 ### TodoRepository
 次のようなTodoクラスのRepositoryを作成する場合を考えます。
 
@@ -143,11 +146,7 @@ class Todo {
         "name": name,
       };
 }
-```
-#### 1. TodoCollectionを定義する　
-`FireCollection`を継承した`TodoCollection`を作成します。
-このクラスは`Todo`がFirestoreの`/users/{userId}/todos`以下に保存されることを定義します。
-```dart
+
 class TodoCollection extends FireCollection {
   TodoCollection({
     required String userId,
@@ -156,12 +155,6 @@ class TodoCollection extends FireCollection {
           documentIds: DocumentIds([userId]),
         );
 }
-```
-
-#### 2. TodoRepoIdを定義する
-次に、`FireRepoId`を継承した、`TodoRepoId`を定義します。
-
-```dart
 
 class TodoRepoId extends FireRepoId<TodoCollection> {
   TodoRepoId({
@@ -174,10 +167,6 @@ class TodoRepoId extends FireRepoId<TodoCollection> {
   }
 }
 
-```
-
-#### 3. TodoRepository用のFireRepoConfigを設定する
-```dart
 final todoRepoConfig = FireRepoConfig<Todo, TodoRepoId, TodoCollection>(
   fromJson: Todo.fromJson,
   toJson: (user) => user.toJson,
@@ -185,7 +174,6 @@ final todoRepoConfig = FireRepoConfig<Todo, TodoRepoId, TodoCollection>(
 );
 ```
 
-#### 4. TodoRepositoryを定義する
 今回はmixinを用いて、FireRepoGetのみを実装しました。
 `TodoGetRepo`はgetメソッドのみ使うことができるRepositoryにです。
 mixinを用いることで、特定の操作のみを行うことのできるRepositoryを定義することができます。
@@ -197,10 +185,4 @@ class TodoGetRepo with FireRepoGet<Todo, TodoRepoId, TodoCollection> {
 }
 ```
 
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
 
