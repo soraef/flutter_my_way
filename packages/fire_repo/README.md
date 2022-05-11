@@ -55,8 +55,8 @@ flutter pub add fire_repo
 Implement Repository for the `User` class stored in the `/users/{userId}` document and the `Todo` class stored in the `/users/{userId}/todos/{todoId}` document.
 
 ### UserRepository
-次のようなUserクラスのRepositoryを作成する場合を考えます。
-Firestoreでは`/users/{userId}`のパスに`User`を保存することにします。
+Consider the following case of creating a Repository for the User class.
+In Firestore, we want to store `User` in the path `/users/{userId}`.
 ```dart
 class User {
   final String id;
@@ -74,9 +74,9 @@ class User {
       };
 }
 ```
-#### 1. UserCollectionを定義する　
-`FireCollection`を継承した`UserCollection`を作成します。
-このクラスは`User`がFirestoreの`/users`以下に保存されることを定義します。
+#### 1.Define UserCollection　
+Create a `UserCollection` that extends `FireCollection`.
+This class defines that `User` will be stored under `/users` in the Firestore.
 ```dart
 class UserCollection extends FireCollection {
   UserCollection()
@@ -87,10 +87,10 @@ class UserCollection extends FireCollection {
 }
 ```
 
-#### 2. UserRepoIdを定義する
-次に、`FireRepoId`を継承した、`UserRepoId`を定義します。
-このクラスはRepositoryからUserを取得するときのIdとして使用します。
-内部的には`User`オブジェクトが`/users/{userId}`上に保存されているという情報を保持しています。
+#### 2. Define UserRepoId
+Next, define `UserRepoId`, which extends `FireRepoId`.
+This class is used as the Id when getting User from Repository.
+Internally, it holds the information that the `User` object is stored on `/users/{userId}`.
 
 ```dart
 
@@ -105,9 +105,9 @@ class UserRepoId extends FireRepoId<UserCollection> {
 }
 ```
 
-#### 3. UserRepository用のFireRepoConfigを設定する
-UserRepositoryで使用する設定を`userRepoConfig`として定義します。
-この`userRepoConfig`は`User`とjsonのマッピングとUserからUserRepoIdへのマッピングを定義します。
+#### 3. Configure FireRepoConfig for UserRepository
+Define the settings used by UserRepository as `userRepoConfig`.
+This `userRepoConfig` defines the mapping between `User` and json and from User to UserRepoId.
 
 ```dart
 final userRepoConfig = FireRepoConfig<User, UserRepoId, UserCollection>(
@@ -117,7 +117,7 @@ final userRepoConfig = FireRepoConfig<User, UserRepoId, UserCollection>(
 );
 ```
 
-#### 4. UserRepositoryを定義する
+#### 4. Define UserRepository
 ```dart
 class UserRepo extends FireRepoAll {
   @override
@@ -126,7 +126,7 @@ class UserRepo extends FireRepoAll {
 ```
 
 ### TodoRepository
-次のようなTodoクラスのRepositoryを作成する場合を考えます。
+Consider the case of creating a Repository for a Todo class that will be stored in the second level of the Firestore, such as `/users/{userId}/todos/{todoId}`.
 
 ```dart
 class Todo {
@@ -174,9 +174,9 @@ final todoRepoConfig = FireRepoConfig<Todo, TodoRepoId, TodoCollection>(
 );
 ```
 
-今回はmixinを用いて、FireRepoGetのみを実装しました。
-`TodoGetRepo`はgetメソッドのみ使うことができるRepositoryにです。
-mixinを用いることで、特定の操作のみを行うことのできるRepositoryを定義することができます。
+In this case, we used mixin to implement only FireRepoGet.
+The `TodoGetRepo` is a Repository that can be used only with the get method.
+By using mixin, you can define a Repository that can only perform specific operations.
 
 ```dart
 class TodoGetRepo with FireRepoGet<Todo, TodoRepoId, TodoCollection> {
