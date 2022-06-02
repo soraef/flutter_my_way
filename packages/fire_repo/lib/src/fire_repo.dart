@@ -17,7 +17,7 @@ abstract class FireRepoAll<T, Id extends FireRepoId<C>,
         FireRepoQueryCursor<T, Id, C>,
         FireRepoGetStream<T, Id, C>,
         FireRepoList<T, Id, C>,
-        FireRepoStore<T, Id, C>,
+        FireRepoSave<T, Id, C>,
         FireRepoDelete<T, Id, C> {}
 
 abstract class FireRepoRead<T, Id extends FireRepoId<C>,
@@ -31,4 +31,4 @@ abstract class FireRepoRead<T, Id extends FireRepoId<C>,
 
 abstract class FireRepoWrite<T, Id extends FireRepoId<C>,
         C extends FireCollection>
-    with FireRepoStore<T, Id, C>, FireRepoDelete<T, Id, C> {}
+    with FireRepoSave<T, Id, C>, FireRepoDelete<T, Id, C> {}

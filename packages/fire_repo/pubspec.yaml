@@ -1,6 +1,6 @@
 name: fire_repo
 description: This package provides an implementation of the Repository pattern with Firestore as the backend.
-version: 0.0.1
+version: 0.0.3
 repository: https://github.com/soraef/flutter_my_way/tree/master/packages/fire_repo
 
 environment:

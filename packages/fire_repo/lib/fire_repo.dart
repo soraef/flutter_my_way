@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-library fire_repo;
+// library fire_repo;
 
 export 'src/fire_collection.dart';
 export 'src/fire_repo_id.dart';

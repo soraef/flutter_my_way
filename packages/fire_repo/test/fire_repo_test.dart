@@ -137,7 +137,7 @@ void main() {
     final user = User("userId", "soraef");
     final repo = UserRepo();
 
-    repo.store(user);
+    repo.save(user);
     repo.get(UserRepoId("userId"));
     repo.list(
       FireListParams(collection: UserCollection(), limit: 10),
