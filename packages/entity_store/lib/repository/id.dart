@@ -33,6 +33,11 @@ mixin CollectionId1 on CollectionId {
   CollectionReference<dynamic> collection() {
     return FirebaseFirestore.instance.collection(collection1);
   }
+
+  @override
+  DocumentReference<dynamic> document(String docId) {
+    return collection().doc(docId);
+  }
 }
 
 mixin CollectionId2 on CollectionId {
@@ -46,5 +51,10 @@ mixin CollectionId2 on CollectionId {
         .collection(collection1)
         .doc(document1)
         .collection(collection2);
+  }
+
+  @override
+  DocumentReference<dynamic> document(String docId) {
+    return collection().doc(docId);
   }
 }
