@@ -26,7 +26,7 @@ abstract class CollectionId {
   }
 }
 
-mixin CollectionId1 on CollectionId {
+mixin CollectionId1 implements CollectionId {
   String get collection1;
 
   @override
@@ -40,7 +40,7 @@ mixin CollectionId1 on CollectionId {
   }
 }
 
-mixin CollectionId2 on CollectionId {
+mixin CollectionId2 implements CollectionId {
   String get collection1;
   String get document1;
   String get collection2;
