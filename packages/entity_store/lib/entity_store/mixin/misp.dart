@@ -8,11 +8,10 @@ import 'package:entity_store/repository/mixin/save.dart';
 mixin RepoGetStore<Id, E extends Entity<Id>>
     implements Store<EntityMap<Id, E>> {
   RepoGet<E, Id> get repoGet;
-  Id Function(Id) get fromEntityId;
 
   /// RepoからEntityを取得して、Storeに保存し、Entityを返す
   Future<E?> get(Id id) async {
-    final entity = await repoGet.get(fromEntityId(id));
+    final entity = await repoGet.get(id);
     update((prev) => entity != null ? prev.put(entity) : prev);
     return entity;
   }
